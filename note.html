@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Making & Password Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Note Making & Password Manager</h1>
+
+    <!-- Notes Section -->
+    <section>
+        <h2>Notes</h2>
+        <input type="text" id="noteTitle" placeholder="Note Title">
+        <textarea id="noteContent" placeholder="Write your note here..."></textarea>
+        <button onclick="saveNote()">Save Note</button>
+        <h3>Your Notes</h3>
+        <ul id="noteList"></ul>
+    </section>
+
+    <!-- Password Manager Section -->
+    <section>
+        <h2>Password Manager</h2>
+        <input type="text" id="website" placeholder="Website">
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="savePassword()">Save Password</button>
+        <h3>Stored Passwords</h3>
+        <ul id="passwordList"></ul>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>

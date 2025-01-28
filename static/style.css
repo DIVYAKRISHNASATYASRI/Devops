@@ -50,7 +50,7 @@ input{
     outline: none;
 }
 .btn{
-    margin-top: -3%;
+    margin-top: -4%;
     margin-left: 7%;
     /* font-size: larger; */
 }
@@ -62,3 +62,4 @@ button{
     border-radius: 5px;
     /* font-size: larger; */
 }
+/* Styling for flash messages */

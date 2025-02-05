@@ -2,31 +2,54 @@ pipeline {
     agent any
 
     environment {
-        VENV = "venv"  // Name of the virtual environment
-        PYTHON = "python3"
+        VENV = "venv"  // Virtual environment name
+        PYTHON = isUnix() ? "python3" : "python"
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/DIVYAKRISHNASATYASRI/Devops.git'  // Replace with your actual repo URL
+                git branch: 'main', url: 'https://github.com/DIVYAKRISHNASATYASRI/Devops.git'
             }
         }
+
         stage('Setup Python Environment') {
             steps {
-                sh '${PYTHON} -m venv ${VENV}'  // Create virtual environment
-                sh 'source ${VENV}/bin/activate'  // Activate virtual environment (Linux/macOS)
+                script {
+                    if (isUnix()) {
+                        sh '${PYTHON} -m venv ${VENV}'
+                        sh 'source ${VENV}/bin/activate'
+                    } else {
+                        bat '${PYTHON} -m venv ${VENV}'
+                        bat 'call ${VENV}\\Scripts\\activate'
+                    }
+                }
             }
         }
+
         stage('Install Dependencies') {
             steps {
-                sh '${VENV}/bin/pip install --upgrade pip'
-                sh '${VENV}/bin/pip install -r requirements.txt'  // Install Flask and dependencies
+                script {
+                    if (isUnix()) {
+                        sh '${VENV}/bin/pip install --upgrade pip'
+                        sh '${VENV}/bin/pip install -r requirements.txt'
+                    } else {
+                        bat '${VENV}\\Scripts\\pip install --upgrade pip'
+                        bat '${VENV}\\Scripts\\pip install -r requirements.txt'
+                    }
+                }
             }
         }
+
         stage('Run Flask Application') {
             steps {
-                sh 'nohup ${VENV}/bin/python app.py &'  // Run Flask app in background
+                script {
+                    if (isUnix()) {
+                        sh 'nohup ${VENV}/bin/python app.py &'
+                    } else {
+                        bat 'start /B ${VENV}\\Scripts\\python app.py'
+                    }
+                }
             }
         }
     }

@@ -33,8 +33,13 @@ pipeline {
                 script {
                     def PIP = isUnix() ? "${VENV}/bin/pip" : "${VENV}\\Scripts\\pip"
                     
-                    sh "${PIP} install --upgrade pip"
-                    sh "${PIP} install -r requirements.txt"
+                    if (isUnix()) {
+                        sh "${PIP} install --upgrade pip"
+                        sh "${PIP} install -r requirements.txt"
+                    } else {
+                        bat "${PIP} install --upgrade pip"
+                        bat "${PIP} install -r requirements.txt"
+                    }
                 }
             }
         }
@@ -49,6 +54,15 @@ pipeline {
                     } else {
                         bat "start /B ${PYTHON_EXEC} app.py"
                     }
+                }
+            }
+        }
+
+        stage('Print Flask URL') {
+            steps {
+                script {
+                    def ip = isUnix() ? sh(script: "hostname -I | awk '{print $1}'", returnStdout: true).trim() : bat(script: "ipconfig | findstr IPv4", returnStdout: true).trim()
+                    echo "Flask app running at http://${ip}:5000"
                 }
             }
         }
